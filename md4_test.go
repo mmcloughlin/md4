@@ -69,3 +69,52 @@ func TestGolden(t *testing.T) {
 		}
 	}
 }
+
+var bench = New()
+var buf = make([]byte, 8<<20)
+var sum = make([]byte, bench.Size())
+
+func benchmarkSize(b *testing.B, size int) {
+	b.SetBytes(int64(size))
+	for i := 0; i < b.N; i++ {
+		bench.Reset()
+		bench.Write(buf[:size])
+		bench.Sum(sum[:0])
+	}
+}
+
+func BenchmarkHash8Bytes(b *testing.B) {
+	benchmarkSize(b, 8)
+}
+
+func BenchmarkHash64(b *testing.B) {
+	benchmarkSize(b, 64)
+}
+
+func BenchmarkHash128(b *testing.B) {
+	benchmarkSize(b, 128)
+}
+
+func BenchmarkHash256(b *testing.B) {
+	benchmarkSize(b, 256)
+}
+
+func BenchmarkHash512(b *testing.B) {
+	benchmarkSize(b, 512)
+}
+
+func BenchmarkHash1K(b *testing.B) {
+	benchmarkSize(b, 1024)
+}
+
+func BenchmarkHash8K(b *testing.B) {
+	benchmarkSize(b, 8192)
+}
+
+func BenchmarkHash1M(b *testing.B) {
+	benchmarkSize(b, 1024*1024)
+}
+
+func BenchmarkHash8M(b *testing.B) {
+	benchmarkSize(b, 8*1024*1024)
+}
