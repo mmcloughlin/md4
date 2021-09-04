@@ -73,13 +73,17 @@ func (d *digest) Write(p []byte) (nn int, err error) {
 		}
 		d.nx += n
 		if d.nx == _Chunk {
-			_Block(d, d.x[0:])
+			block(&d.s, d.x[0:])
 			d.nx = 0
 		}
 		p = p[n:]
 	}
-	n := _Block(d, p)
-	p = p[n:]
+
+	for len(p) >= _Chunk {
+		block(&d.s, p)
+		p = p[_Chunk:]
+	}
+
 	if len(p) > 0 {
 		d.nx = copy(d.x[:], p)
 	}
