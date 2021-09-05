@@ -9,6 +9,7 @@ import (
 //go:generate go run . -out ../block_amd64.s -stubs ../block_amd64.go -pkg md4
 
 func main() {
+	ConstraintExpr("amd64,!purego")
 	TEXT("block", 0, "func(h *[4]uint32, m []byte)")
 	Doc("block SHA-1 hashes the 64-byte message m into the running state h.")
 	h := Mem{Base: Load(Param("h"), GP64())}
