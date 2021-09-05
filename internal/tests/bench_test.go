@@ -1,4 +1,4 @@
-package main
+package tests
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 
 var buf = make([]byte, 1<<20)
 
-func main() {
+func BenchmarkHash(b *testing.B) {
 	hashes := []struct {
 		Name string
 		New  func() hash.Hash
@@ -36,7 +36,8 @@ func main() {
 
 	for _, size := range sizes {
 		for _, impl := range hashes {
-			r := testing.Benchmark(func(b *testing.B) {
+			name := fmt.Sprintf("size=%s/pkg=%s", size.Name, impl.Name)
+			b.Run(name, func(b *testing.B) {
 				h := impl.New()
 				b.SetBytes(int64(size.Bytes))
 				sum := make([]byte, h.Size())
@@ -46,7 +47,6 @@ func main() {
 					h.Sum(sum[:0])
 				}
 			})
-			fmt.Printf("%-12s\t%-4s\t%s\n", impl.Name, size.Name, r)
 		}
 	}
 }

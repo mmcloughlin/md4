@@ -1,4 +1,4 @@
-module github.com/mmcloughlin/md4/internal/bench
+module github.com/mmcloughlin/md4/internal/tests
 
 go 1.17
 

@@ -33,6 +33,9 @@ jobs:
         run: go test -v -bench . -benchtime=1x
       - name: Test Pure Go
         run: go test -tags purego -v -bench . -benchtime=1x
+      - name: Comparison Tests
+        working-directory: internal/tests
+        run: go test -tags purego -v -bench . -benchtime=1x
 
   lint:
     runs-on: ubuntu-latest
