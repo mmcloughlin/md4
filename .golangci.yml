@@ -1,0 +1,58 @@
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - deadcode
+    - depguard
+    - dupl
+    # - errcheck
+    - errorlint
+    - exhaustive
+    - exportloopref
+    - forbidigo
+    - forcetypeassert
+    - gci
+    - gocognit
+    - gocritic
+    - gocyclo
+    - godot
+    - godox
+    - gofmt
+    - gofumpt
+    - goimports
+    - goprintffuncname
+    #- gosec
+    - gosimple
+    - govet
+    - importas
+    - ineffassign
+    - makezero
+    - misspell
+    - nakedret
+    - nestif
+    - nilerr
+    #- predeclared
+    #- revive
+    - staticcheck
+    - structcheck
+    #- stylecheck
+    #- thelper
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - varcheck
+    - wastedassign
+    - whitespace
+
+linters-settings:
+  staticcheck:
+    checks: ["all", "-SA1019"]
+
+  depguard:
+    list-type: whitelist
+    packages:
+      - github.com/mmcloughlin/md4
+
+issues:
+  exclude-use-default: false
