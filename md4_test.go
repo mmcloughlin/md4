@@ -70,9 +70,11 @@ func TestGolden(t *testing.T) {
 	}
 }
 
-var bench = New()
-var buf = make([]byte, 8<<20)
-var sum = make([]byte, bench.Size())
+var (
+	bench = New()
+	buf   = make([]byte, 8<<20)
+	sum   = make([]byte, bench.Size())
+)
 
 func benchmarkSize(b *testing.B, size int) {
 	b.SetBytes(int64(size))
