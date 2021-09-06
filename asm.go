@@ -99,19 +99,19 @@ func choose(b, c, d Register) Register {
 
 func majority(b, c, d Register) Register {
 	t, r := GP32(), GP32()
-	MOVL(b, t)
-	ORL(c, t)
-	ANDL(d, t)
-	MOVL(b, r)
-	ANDL(c, r)
+	MOVL(c, t)
+	ORL(d, t)
+	ANDL(b, t)
+	MOVL(c, r)
+	ANDL(d, r)
 	ORL(t, r)
 	return r
 }
 
 func xor(b, c, d Register) Register {
 	r := GP32()
-	MOVL(b, r)
-	XORL(c, r)
+	MOVL(c, r)
 	XORL(d, r)
+	XORL(b, r)
 	return r
 }
