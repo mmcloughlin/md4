@@ -46,9 +46,6 @@ linters:
     - whitespace
 
 linters-settings:
-  staticcheck:
-    checks: ["all", "-SA1019"]
-
   depguard:
     list-type: whitelist
     packages:
