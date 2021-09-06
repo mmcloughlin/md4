@@ -28,10 +28,10 @@ const Size = 16
 const BlockSize = 64
 
 const (
-	_Init0 = 0x67452301
-	_Init1 = 0xEFCDAB89
-	_Init2 = 0x98BADCFE
-	_Init3 = 0x10325476
+	init0 = 0x67452301
+	init1 = 0xEFCDAB89
+	init2 = 0x98BADCFE
+	init3 = 0x10325476
 )
 
 // digest represents the partial evaluation of a checksum.
@@ -43,10 +43,10 @@ type digest struct {
 }
 
 func (d *digest) Reset() {
-	d.s[0] = _Init0
-	d.s[1] = _Init1
-	d.s[2] = _Init2
-	d.s[3] = _Init3
+	d.s[0] = init0
+	d.s[1] = init1
+	d.s[2] = init2
+	d.s[3] = init3
 	d.nx = 0
 	d.len = 0
 }
