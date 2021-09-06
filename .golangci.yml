@@ -5,7 +5,7 @@ linters:
     - deadcode
     - depguard
     - dupl
-    # - errcheck
+    - errcheck
     - errorlint
     - exhaustive
     - exportloopref
@@ -21,7 +21,7 @@ linters:
     - gofumpt
     - goimports
     - goprintffuncname
-    #- gosec
+    - gosec
     - gosimple
     - govet
     - importas
@@ -31,12 +31,12 @@ linters:
     - nakedret
     - nestif
     - nilerr
-    #- predeclared
-    #- revive
+    - predeclared
+    - revive
     - staticcheck
     - structcheck
-    #- stylecheck
-    #- thelper
+    - stylecheck
+    - thelper
     - typecheck
     - unconvert
     - unparam
