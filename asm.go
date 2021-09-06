@@ -65,11 +65,11 @@ func main() {
 	for r := 0; r < 48; r++ {
 		Commentf("Round %d.", r)
 		t := third[r/16]
-		ADDL(t.F(b, c, d), a)
 		ADDL(X(t.i[r%16]), a)
 		if t.K != 0 {
 			ADDL(U32(t.K), a)
 		}
+		ADDL(t.F(b, c, d), a)
 		ROLL(U8(t.s[r%4]), a)
 		a, b, c, d = d, a, b, c
 	}
