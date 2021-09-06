@@ -28,7 +28,6 @@ const Size = 16
 const BlockSize = 64
 
 const (
-	_Chunk = 64
 	_Init0 = 0x67452301
 	_Init1 = 0xEFCDAB89
 	_Init2 = 0x98BADCFE
@@ -38,7 +37,7 @@ const (
 // digest represents the partial evaluation of a checksum.
 type digest struct {
 	s   [4]uint32
-	x   [_Chunk]byte
+	x   [BlockSize]byte
 	nx  int
 	len uint64
 }
@@ -68,23 +67,23 @@ func (d *digest) Write(p []byte) (nn int, err error) {
 	d.len += uint64(nn)
 	if d.nx > 0 {
 		n := len(p)
-		if n > _Chunk-d.nx {
-			n = _Chunk - d.nx
+		if n > BlockSize-d.nx {
+			n = BlockSize - d.nx
 		}
 		for i := 0; i < n; i++ {
 			d.x[d.nx+i] = p[i]
 		}
 		d.nx += n
-		if d.nx == _Chunk {
+		if d.nx == BlockSize {
 			block(&d.s, d.x[0:])
 			d.nx = 0
 		}
 		p = p[n:]
 	}
 
-	for len(p) >= _Chunk {
+	for len(p) >= BlockSize {
 		block(&d.s, p)
-		p = p[_Chunk:]
+		p = p[BlockSize:]
 	}
 
 	if len(p) > 0 {
