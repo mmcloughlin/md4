@@ -11,6 +11,7 @@ package md4
 
 import (
 	"crypto"
+	"encoding/binary"
 	"hash"
 )
 
@@ -92,37 +93,42 @@ func (d *digest) Write(p []byte) (nn int, err error) {
 	return
 }
 
-func (d0 *digest) Sum(in []byte) []byte {
-	// Make a copy of d0, so that caller can keep writing and summing.
-	d := new(digest)
-	*d = *d0
+func (d *digest) Sum(in []byte) []byte {
+	// Make a copy of d so that caller can keep writing and summing.
+	d0 := *d
+	hash := d0.checkSum()
+	return append(in, hash[:]...)
+}
 
-	// Padding.  Add a 1 bit and 0 bits until 56 bytes mod 64.
-	len := d.len
-	var tmp [64]byte
-	tmp[0] = 0x80
-	if len%64 < 56 {
-		d.Write(tmp[0 : 56-len%64])
-	} else {
-		d.Write(tmp[0 : 64+56-len%64])
-	}
+func (d *digest) checkSum() [Size]byte {
+	// Append 0x80 to the end of the message and then append zeros
+	// until the length is a multiple of 56 bytes. Finally append
+	// 8 bytes representing the message length in bits.
+	//
+	// 1 byte end marker :: 0-63 padding bytes :: 8 byte length
+	tmp := [1 + 63 + 8]byte{0x80}
+	pad := (55 - d.len) % 64                             // calculate number of padding bytes
+	binary.LittleEndian.PutUint64(tmp[1+pad:], d.len<<3) // append length in bits
+	d.Write(tmp[:1+pad+8])
 
-	// Length in bits.
-	len <<= 3
-	for i := uint(0); i < 8; i++ {
-		tmp[i] = byte(len >> (8 * i))
-	}
-	d.Write(tmp[0:8])
-
+	// The previous write ensures that a whole number of
+	// blocks (i.e. a multiple of 64 bytes) have been hashed.
 	if d.nx != 0 {
 		panic("d.nx != 0")
 	}
 
-	for _, s := range d.s {
-		in = append(in, byte(s>>0))
-		in = append(in, byte(s>>8))
-		in = append(in, byte(s>>16))
-		in = append(in, byte(s>>24))
-	}
-	return in
+	var digest [Size]byte
+	binary.LittleEndian.PutUint32(digest[0:], d.s[0])
+	binary.LittleEndian.PutUint32(digest[4:], d.s[1])
+	binary.LittleEndian.PutUint32(digest[8:], d.s[2])
+	binary.LittleEndian.PutUint32(digest[12:], d.s[3])
+	return digest
+}
+
+// Sum returns the MD4 checksum of the data.
+func Sum(data []byte) [Size]byte {
+	var d digest
+	d.Reset()
+	d.Write(data)
+	return d.checkSum()
 }

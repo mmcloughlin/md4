@@ -70,6 +70,15 @@ func TestGolden(t *testing.T) {
 	}
 }
 
+func TestSumGolden(t *testing.T) {
+	for _, g := range golden {
+		got := fmt.Sprintf("%x", Sum([]byte(g.in)))
+		if got != g.out {
+			t.Fatalf("Sum(%s) = %s want %s", g.in, got, g.out)
+		}
+	}
+}
+
 var (
 	bench = New()
 	buf   = make([]byte, 8<<20)
