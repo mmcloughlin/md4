@@ -62,7 +62,7 @@ func (d *digest) Size() int { return Size }
 
 func (d *digest) BlockSize() int { return BlockSize }
 
-func (d *digest) Write(p []byte) (nn int, err error) {
+func (d *digest) Write(p []byte) (int, error) {
 	return d.write(p), nil
 }
 
