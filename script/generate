@@ -2,4 +2,8 @@
 
 set -exuo pipefail
 
+# Licenses.
+find . -name '*.go' | xargs addlicense -l bsd -c 'The Go Authors.'
+
+# Go generate.
 go generate -v -x
