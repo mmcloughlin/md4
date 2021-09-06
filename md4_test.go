@@ -6,7 +6,6 @@ package md4
 
 import (
 	"fmt"
-	"io"
 	"testing"
 )
 
@@ -55,11 +54,11 @@ func TestGolden(t *testing.T) {
 		c := New()
 		for j := 0; j < 3; j++ {
 			if j < 2 {
-				io.WriteString(c, g.in)
+				c.Write([]byte(g.in))
 			} else {
-				io.WriteString(c, g.in[0:len(g.in)/2])
+				c.Write([]byte(g.in[0 : len(g.in)/2]))
 				c.Sum(nil)
-				io.WriteString(c, g.in[len(g.in)/2:])
+				c.Write([]byte(g.in[len(g.in)/2:]))
 			}
 			s := fmt.Sprintf("%x", c.Sum(nil))
 			if s != g.out {
@@ -86,6 +85,7 @@ var (
 )
 
 func benchmarkSize(b *testing.B, size int) {
+	b.Helper()
 	b.SetBytes(int64(size))
 	for i := 0; i < b.N; i++ {
 		bench.Reset()

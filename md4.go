@@ -63,7 +63,11 @@ func (d *digest) Size() int { return Size }
 func (d *digest) BlockSize() int { return BlockSize }
 
 func (d *digest) Write(p []byte) (nn int, err error) {
-	nn = len(p)
+	return d.write(p), nil
+}
+
+func (d *digest) write(p []byte) int {
+	nn := len(p)
 	d.len += uint64(nn)
 	if d.nx > 0 {
 		n := len(p)
@@ -89,7 +93,7 @@ func (d *digest) Write(p []byte) (nn int, err error) {
 	if len(p) > 0 {
 		d.nx = copy(d.x[:], p)
 	}
-	return
+	return nn
 }
 
 func (d *digest) Sum(in []byte) []byte {
@@ -108,7 +112,7 @@ func (d *digest) checkSum() [Size]byte {
 	tmp := [1 + 63 + 8]byte{0x80}
 	pad := (55 - d.len) % 64                             // calculate number of padding bytes
 	binary.LittleEndian.PutUint64(tmp[1+pad:], d.len<<3) // append length in bits
-	d.Write(tmp[:1+pad+8])
+	d.write(tmp[:1+pad+8])
 
 	// The previous write ensures that a whole number of
 	// blocks (i.e. a multiple of 64 bytes) have been hashed.
@@ -128,6 +132,6 @@ func (d *digest) checkSum() [Size]byte {
 func Sum(data []byte) [Size]byte {
 	var d digest
 	d.Reset()
-	d.Write(data)
+	d.write(data)
 	return d.checkSum()
 }
