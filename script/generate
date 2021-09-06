@@ -2,4 +2,15 @@
 
 set -exuo pipefail
 
+# Licenses.
+license="$(mktemp)"
+cat > "${license}" <<EOF
+Copyright {{.Year}} {{.Holder}}. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+EOF
+find . -name '*.go' | xargs addlicense -c 'The Go Authors' -f "${license}"
+rm "${license}"
+
+# Go generate.
 go generate -v -x
