@@ -15,7 +15,7 @@ import (
 	"hash"
 )
 
-//go:generate go run -modfile asm.mod asm.go -out block_amd64.s -stubs block_amd64.go -pkg md4
+//go:generate go run -modfile=asm/go.mod asm/asm.go -out block_amd64.s -stubs block_amd64.go -pkg md4
 
 func init() {
 	crypto.RegisterHash(crypto.MD4, New)

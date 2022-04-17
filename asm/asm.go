@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build ignore
-// +build ignore
-
 package main
 
 import (
@@ -12,8 +9,6 @@ import (
 	. "github.com/mmcloughlin/avo/operand"
 	. "github.com/mmcloughlin/avo/reg"
 )
-
-//go:generate go run . -out ../block_amd64.s -stubs ../block_amd64.go -pkg md4
 
 func main() {
 	ConstraintExpr("amd64,!purego")

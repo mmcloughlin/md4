@@ -1,4 +1,4 @@
-module asm
+module github.com/mmcloughlin/md4/asm
 
 go 1.17
 
