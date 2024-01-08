@@ -2,7 +2,6 @@ linters:
   disable-all: true
   enable:
     - asciicheck
-    - deadcode
     - depguard
     - dupl
     - errcheck
@@ -34,22 +33,22 @@ linters:
     - predeclared
     - revive
     - staticcheck
-    - structcheck
     - stylecheck
     - thelper
     - typecheck
     - unconvert
     - unparam
     - unused
-    - varcheck
     - wastedassign
     - whitespace
 
 linters-settings:
   depguard:
-    list-type: whitelist
-    packages:
-      - github.com/mmcloughlin/md4
+    rules:
+      main:
+        allow:
+          - github.com/mmcloughlin/md4
+          - $gostd
 
 issues:
   exclude-use-default: false
